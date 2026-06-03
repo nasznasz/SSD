@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Audit Log <small style="color:#888;">(Admin only)</small></h2>
+<p>Showing the most recent 200 security events (login attempts, logouts, denied access).</p>
+<table>
+    <tr>
+        <th>Timestamp</th>
+        <th>Username</th>
+        <th>Action</th>
+        <th>IP Address</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.timestamp|date:"d M Y H:i:s" }}</td>
+        <td>{{ log.username }}</td>
+        <td>{{ log.get_action_display }}</td>
+        <td>{{ log.ip_address|default:"-" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No audit records yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

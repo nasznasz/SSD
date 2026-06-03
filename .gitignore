@@ -1,0 +1,23 @@
+# Secrets - NEVER commit the real .env
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Database (do not commit local SQLite data)
+db.sqlite3
+
+# Static collected files
+staticfiles/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store

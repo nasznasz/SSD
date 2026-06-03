@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>{{ action }} Task</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Title</label>
+    {{ form.title }}
+    {{ form.title.errors }}
+
+    <label>Description</label>
+    {{ form.description }}
+    {{ form.description.errors }}
+
+    <label>Status</label>
+    {{ form.status }}
+    {{ form.status.errors }}
+
+    <button type="submit" class="btn btn-primary">{{ action }} Task</button>
+    <a href="/tasks/" class="btn">Cancel</a>
+</form>
+{% endblock %}

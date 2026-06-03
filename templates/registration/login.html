@@ -1,0 +1,21 @@
+{% extends 'core/base_auth.html' %}
+{% block content %}
+<h2>Login</h2>
+
+{% if form.errors %}
+    <div class="alert-error">Invalid username or password. Please try again.</div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <label>Username</label>
+    {{ form.username }}
+
+    <label>Password</label>
+    {{ form.password }}
+
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<p style="margin-top:15px;">No account? <a href="{% url 'register' %}">Register here</a></p>
+{% endblock %}

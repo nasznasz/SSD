@@ -1,0 +1,96 @@
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib import messages
+from .models import Task, AuditLog
+from .forms import TaskForm, RegistrationForm
+from .decorators import admin_required
+
+
+def _client_ip(request):
+    xff = request.META.get('HTTP_X_FORWARDED_FOR')
+    if xff:
+        return xff.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
+
+# ============================================================
+#  Developer 2 :  REGISTRATION
+# ============================================================
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('task_list')
+
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # password is hashed by UserCreationForm
+            AuditLog.objects.create(
+                username=user.username, action='register',
+                ip_address=_client_ip(request),
+                user_agent=request.META.get('HTTP_USER_AGENT', '')[:255],
+            )
+            # New accounts are always normal users (profile created via signal)
+            login(request, user)  # rotates the session key -> session fixation safe
+            messages.success(request, 'Account created successfully. Welcome!')
+            return redirect('task_list')
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+
+# ============================================================
+#  Developer 2 :  AUDIT LOG PAGE  (Admin only - RBAC enforced)
+# ============================================================
+@admin_required
+def audit_log(request):
+    logs = AuditLog.objects.all()[:200]  # newest 200 entries
+    return render(request, 'core/audit_log.html', {'logs': logs})
+
+
+# ============================================================
+#  Developer 1 :  Secure CRUD  (unchanged)
+# ============================================================
+@login_required
+def task_list(request):
+    tasks = Task.objects.filter(owner=request.user)
+    return render(request, 'core/task_list.html', {'tasks': tasks})
+
+
+@login_required
+def task_create(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.owner = request.user  # prevent IDOR
+            task.save()
+            messages.success(request, 'Task created successfully!')
+            return redirect('task_list')
+    else:
+        form = TaskForm()
+    return render(request, 'core/task_form.html', {'form': form, 'action': 'Create'})
+
+
+@login_required
+def task_edit(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)  # IDOR protection
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Task updated successfully!')
+            return redirect('task_list')
+    else:
+        form = TaskForm(instance=task)
+    return render(request, 'core/task_form.html', {'form': form, 'action': 'Edit'})
+
+
+@login_required
+def task_delete(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)  # IDOR protection
+    if request.method == 'POST':
+        task.delete()
+        messages.success(request, 'Task deleted successfully!')
+        return redirect('task_list')
+    return render(request, 'core/task_confirm_delete.html', {'task': task})

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Task Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+        .navbar { background: #333; padding: 10px 20px; color: white; }
+        .container { max-width: 450px; margin: 60px auto; padding: 30px; background: white; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        input { width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .errorlist { color: red; font-size: 12px; list-style: none; padding: 0; }
+        .alert-error { background: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; margin-bottom: 15px; color: #721c24; }
+        a { color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="navbar"><span>🔒 Secure Task Manager</span></div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

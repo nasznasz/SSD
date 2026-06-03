@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>My Tasks</h2>
+<a href="/tasks/create/" class="btn btn-primary">+ New Task</a>
+<br><br>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Actions</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.created_at|date:"d M Y" }}</td>
+        <td>
+            <a href="/tasks/{{ task.pk }}/edit/" class="btn btn-warning">Edit</a>
+            <a href="/tasks/{{ task.pk }}/delete/" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">No tasks yet. Create one!</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
