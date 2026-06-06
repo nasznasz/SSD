@@ -1,21 +1,19 @@
 {% extends 'core/base_auth.html' %}
 {% block content %}
-<h2>Login</h2>
-
-{% if form.errors %}
-    <div class="alert-error">Invalid username or password. Please try again.</div>
-{% endif %}
-
-<form method="POST">
+<div class="auth-card">
+  <div class="auth-brand">
+    <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+    Task<span style="color:var(--primary)">Flow</span>
+  </div>
+  <h2>Welcome back</h2>
+  <p class="auth-sub">Sign in to your account</p>
+  {% if form.errors %}<div class="alert alert-error">Invalid username or password. Please try again.</div>{% endif %}
+  <form method="POST" class="app-form">
     {% csrf_token %}
-    <label>Username</label>
-    {{ form.username }}
-
-    <label>Password</label>
-    {{ form.password }}
-
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
-
-<p style="margin-top:15px;">No account? <a href="{% url 'register' %}">Register here</a></p>
+    <div class="form-group"><label for="id_username">Username</label>{{ form.username }}</div>
+    <div class="form-group"><label for="id_password">Password</label>{{ form.password }}</div>
+    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+  </form>
+  <p class="auth-foot">No account? <a href="{% url 'register' %}">Register here</a></p>
+</div>
 {% endblock %}

@@ -8,4 +8,6 @@ urlpatterns = [
     path('<int:pk>/delete/', views.task_delete, name='task_delete'),
     # Developer 2 : admin-only audit log
     path('audit-log/', views.audit_log, name='audit_log'),
+    # Developer 2 : user profile page
+    path('profile/', views.profile, name='profile'),
 ]

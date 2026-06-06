@@ -15,8 +15,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -83,6 +83,7 @@ USE_TZ = True
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']   # <-- tambah baris ni
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -96,7 +97,7 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 # ============================================================
-#  Developer 2 :  SESSION SECURITY  (OWASP ASVS V2/V3)
+#   SESSION SECURITY  (OWASP ASVS V2/V3)
 # ============================================================
 # Idle session timeout: log users out after 15 minutes of inactivity.
 SESSION_COOKIE_AGE = 15 * 60          # 900 seconds
@@ -108,7 +109,7 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 # NOTE: set *_COOKIE_SECURE = True once served over HTTPS in production.
 
 # ============================================================
-#  Developer 2 :  AUTH REDIRECTS
+#    AUTH REDIRECTS
 # ============================================================
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/tasks/'

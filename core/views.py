@@ -49,6 +49,19 @@ def audit_log(request):
 
 
 # ============================================================
+#  Developer 2 :  USER PROFILE PAGE  (Functional Requirement #4)
+# ============================================================
+@login_required
+def profile(request):
+    # Shows the logged-in user's own info only (no IDOR - always request.user)
+    task_count = Task.objects.filter(owner=request.user).count()
+    return render(request, 'core/profile.html', {
+        'profile_user': request.user,
+        'task_count': task_count,
+    })
+
+
+# ============================================================
 #  Developer 1 :  Secure CRUD  (unchanged)
 # ============================================================
 @login_required

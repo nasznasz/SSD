@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="card profile-hero">
+  <div class="avatar">{{ profile_user.username|slice:":2"|upper }}</div>
+  <div class="meta">
+    <h1>{{ profile_user.username }}
+      {% if profile_user.is_superuser or profile_user.profile.is_admin %}
+        <span class="badge badge-admin">Admin</span>
+      {% else %}<span class="badge badge-user">Normal User</span>{% endif %}
+    </h1>
+    <p class="sub">{{ profile_user.email|default:"No email added" }} · Member since {{ profile_user.date_joined|date:"M Y" }}</p>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat">
+    <div class="num">{{ task_count }}</div>
+    <div class="lbl">My Tasks</div>
+  </div>
+  <div class="stat">
+    <div class="num">{% if profile_user.is_superuser or profile_user.profile.is_admin %}Admin{% else %}User{% endif %}</div>
+    <div class="lbl">Role</div>
+  </div>
+  <div class="stat">
+    <div class="num">Active</div>
+    <div class="lbl">Account Status</div>
+  </div>
+</div>
+
+<div class="page-head" style="margin-bottom:12px">
+  <div><h1 style="font-size:1.15rem">Account Details</h1></div>
+</div>
+<div class="card">
+  <div class="info-list">
+    <div class="info-row"><span class="k">Username</span><span class="v">{{ profile_user.username }}</span></div>
+    <div class="info-row"><span class="k">Email</span><span class="v">{{ profile_user.email|default:"—" }}</span></div>
+    <div class="info-row"><span class="k">Role</span><span class="v">{% if profile_user.is_superuser or profile_user.profile.is_admin %}Administrator{% else %}Normal User{% endif %}</span></div>
+    <div class="info-row"><span class="k">Date joined</span><span class="v">{{ profile_user.date_joined|date:"d M Y, H:i" }}</span></div>
+    <div class="info-row"><span class="k">Last login</span><span class="v">{{ profile_user.last_login|date:"d M Y, H:i"|default:"—" }}</span></div>
+    <div class="info-row"><span class="k">Total tasks</span><span class="v">{{ task_count }}</span></div>
+  </div>
+</div>
+
+<a href="/tasks/" class="back-link">← Back to my tasks</a>
+{% endblock %}
