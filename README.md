@@ -130,18 +130,9 @@ SSD/
 - **Dynamic Testing:** OWASP ZAP active scan — full HTML reports in `docs/zap-report-before.html` and `docs/zap-report-after.html`
 - Detailed before/after results are documented in the project technical report.
 
----
-
 ## 8. Screenshots
 
-> Add a screenshot of the running app below (place the image in `docs/screenshots/`):
-
-```
-![TaskFlow — My Tasks](docs/screenshots/tasks.png)
-![TaskFlow — Login](docs/screenshots/login.png)
-```
-
----
+![My Tasks](docs/screenshoots/Tasks_Flow.png)
 
 ## Author
 
