@@ -42,6 +42,8 @@ def register(request):
 # ============================================================
 #  Developer 2 :  AUDIT LOG PAGE  (Admin only - RBAC enforced)
 # ============================================================
+
+#@login_required  # BEFORE: hanya semak login, tiada semakan peranan
 @admin_required
 def audit_log(request):
     logs = AuditLog.objects.all()[:200]  # newest 200 entries
@@ -107,3 +109,17 @@ def task_delete(request, pk):
         messages.success(request, 'Task deleted successfully!')
         return redirect('task_list')
     return render(request, 'core/task_confirm_delete.html', {'task': task})
+
+#@login_required
+#def task_search(request):
+#    q = request.GET.get('q', '')
+#    # VULNERABLE: raw SQL + string concat (TEMPORARY - untuk demo before)
+#    query = "SELECT * FROM core_task WHERE title LIKE '%" + q + "%'"
+#    tasks = list(Task.objects.raw(query))
+#   return render(request, 'core/task_list.html', {'tasks': tasks})
+
+@login_required
+def task_search(request):
+    q = request.GET.get('q', '')
+    tasks = Task.objects.filter(title__icontains=q, owner=request.user)
+    return render(request, 'core/task_list.html', {'tasks': tasks})
